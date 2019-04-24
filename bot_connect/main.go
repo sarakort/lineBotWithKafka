@@ -1,12 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"bot/connect/kafka"
 	"log"
 	"os"
 	"flag"
 	"fmt"
-	"encoding/json"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
@@ -27,9 +27,6 @@ func startServer() {
 	producer := kafka.NewKafkaSyncProducer(os.Getenv("BOOTSTRAP_SERVERS"))
 	consumer := kafka.NewKafkaConsumer(os.Getenv("BOOTSTRAP_SERVERS"),os.Getenv("TOPIC_IMCOMING"))
 	e := echo.New()
-	// Initialize linebot client
-	// lineIn := line.NewLineInbound(os.Getenv("CHANNEL_SECRET"), os.Getenv("CHANNEL_ACCESS_TOKEN"), producer,  os.Getenv("TOPIC_IMCOMIMG"))
-	// lineOut:= line.NewLineOutbound(os.Getenv("CHANNEL_SECRET"), os.Getenv("CHANNEL_ACCESS_TOKEN"), *consumer )
 
 	defer e.Close()
 	defer producer.Close()
@@ -62,11 +59,14 @@ func consumeEvents(consumer *kafka.Consumer, producer kafka.Producer, topic stri
 		case msg := <- consumer.Con.Messages():
 			consumer.Con.MarkOffset(msg, "")
 			msgVal = msg.Value
-			if err = json.Unmarshal(msgVal, &event) ;err !=nil{
+			fmt.Printf("msg in: %s\n", string(msgVal))
+
+			if err = json.Unmarshal(msgVal , &event) ;err !=nil{
 				fmt.Println("linebot event unmarshall error")
 			}else{
 				fmt.Printf("value %v\n", event)
-				if err = producer.SendMsg(topic, event) ; err != nil{
+
+				if err = producer.SendByteMsg(topic, msgVal) ; err != nil{
 					fmt.Printf("Send to kafka error %s\n", err)
 				}
 			}

@@ -54,17 +54,6 @@ func (l *LineInbound) MessageHanlder(c echo.Context) error {
 		if err = l.Producer.SendMsg(l.Topic, event) ; err != nil {
 			log.Print(err)
 		}
-		// if event.Type == linebot.EventTypeMessage {
-		// 	switch message := event.Message.(type) {
-		// 	case *linebot.TextMessage:
-		// 		fmt.Printf("Recived text: %s\n", message.Text)
-
-		// 		messageFromPing := "hello, I am bot." + message.Text
-		// 		if err = l.ReplyMessage(event, messageFromPing); err != nil {
-		// 			log.Print(err)
-		// 		}
-		// 	}
-		// }
 	}
 	return c.JSON(http.StatusOK, "OK!")
 }

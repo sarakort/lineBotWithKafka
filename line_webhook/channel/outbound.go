@@ -2,7 +2,6 @@ package channel
 
 import (
 	"line_webhook/kafka"
-	"encoding/json"
 	"fmt"
 
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -50,7 +49,7 @@ func (l *LineOutbound)ConsumeEvents(){
 			msgVal = msg.Value
 			fmt.Printf("Topic %s, Processing %s\n",  l.Consumer.Topics, string(msgVal))
 			
-			if err = json.Unmarshal(msgVal, &event ); err != nil{
+			if err = event.UnmarshalJSON(msgVal ); err != nil{
 				fmt.Printf("linebot event unmarshall error: %s\n" ,err)
 			}else {
 				// logMap = log.(map[string]interface{})

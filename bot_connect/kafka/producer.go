@@ -1,7 +1,6 @@
 package kafka
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -53,18 +52,18 @@ func NewKafkaSyncProducer(brokers string) Producer {
 	}
 }
 
-func (p Producer) SendMsg(topic string, event interface{}) error {
-	fmt.Printf("Topic: %s Message: %+v\n", topic, event)
-	json, err := json.Marshal(event)
+func (p Producer) SendByteMsg(topic string, msg []byte) error {
+	// fmt.Printf("Topic: %s Message: %+v\n", topic, event)
+	// json, err := json.Marshal(event)
 
-	if err != nil {
-		return err
-	}
-	fmt.Printf("Topic: %s Json: %s\n", topic, json)
+	// if err != nil {
+	// 	return err
+	// }
+	fmt.Printf("Topic: %s Json: %s\n", topic, string(msg))
 
 	pmsg := &sarama.ProducerMessage{
 		Topic: topic,
-		Value: sarama.StringEncoder(string(json)),
+		Value: sarama.StringEncoder(string(msg)),
 	}
 
 	partition, offset, err := p.Con.SendMessage(pmsg)
