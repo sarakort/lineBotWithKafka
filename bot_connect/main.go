@@ -7,6 +7,7 @@ import (
 	"os"
 	"flag"
 	"fmt"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
@@ -65,6 +66,7 @@ func consumeEvents(consumer *kafka.Consumer, producer kafka.Producer, topic stri
 				fmt.Println("linebot event unmarshall error")
 			}else{
 				fmt.Printf("value %v\n", event)
+				time.Sleep(1 * time.Second)
 
 				if err = producer.SendByteMsg(topic, msgVal) ; err != nil{
 					fmt.Printf("Send to kafka error %s\n", err)

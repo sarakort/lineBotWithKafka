@@ -32,8 +32,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      CHANNEL_SECRET: 1b9a94033a33ad9610caf850dc812f9e
-      CHANNEL_ACCESS_TOKEN: VWxEiTj0Fd9pUhyduZ1VO4uaYk+YZ1qWXlGzFTJYdrFsCoC8AI/WHOXIj8fs6hTKbx9inzO2EoTD2rSVNBY3/koXWIpdsHEifNbOmAHiB2w1FqNKdIFc20dw8zUZJThSvIRHXljf/VIiXBdjgvl2nAdB04t89/1O/w1cDnyilFU=
+      CHANNEL_SECRET: <your secret> 
+      CHANNEL_ACCESS_TOKEN: <your access token> 
       BOOTSTRAP_SERVERS: kafka:9092
       TOPIC_IMCOMING: line_imcoming
       TOPIC_OUTGOING: line_outgoing
