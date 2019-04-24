@@ -1,0 +1,50 @@
+# github.com/DataDog/zstd v1.4.0
+github.com/DataDog/zstd
+# github.com/Shopify/sarama v1.22.0
+github.com/Shopify/sarama
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
+# github.com/eapache/go-resiliency v1.1.0
+github.com/eapache/go-resiliency/breaker
+# github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21
+github.com/eapache/go-xerial-snappy
+# github.com/eapache/queue v1.1.0
+github.com/eapache/queue
+# github.com/golang/snappy v0.0.1
+github.com/golang/snappy
+# github.com/joho/godotenv v1.3.0
+github.com/joho/godotenv
+# github.com/labstack/echo v3.3.10+incompatible
+github.com/labstack/echo
+# github.com/labstack/gommon v0.2.8
+github.com/labstack/gommon/color
+github.com/labstack/gommon/log
+# github.com/line/line-bot-sdk-go v6.2.0+incompatible
+github.com/line/line-bot-sdk-go/linebot
+# github.com/mattn/go-colorable v0.1.1
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.7
+github.com/mattn/go-isatty
+# github.com/pierrec/lz4 v0.0.0-20190327172049-315a67e90e41
+github.com/pierrec/lz4
+github.com/pierrec/lz4/internal/xxh32
+# github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a
+github.com/rcrowley/go-metrics
+# github.com/valyala/bytebufferpool v1.0.0
+github.com/valyala/bytebufferpool
+# github.com/valyala/fasttemplate v1.0.1
+github.com/valyala/fasttemplate
+# golang.org/x/crypto v0.0.0-20190422183909-d864b10871cd
+golang.org/x/crypto/acme/autocert
+golang.org/x/crypto/acme
+# golang.org/x/net v0.0.0-20190420063019-afa5a82059c6
+golang.org/x/net/proxy
+golang.org/x/net/idna
+golang.org/x/net/internal/socks
+# golang.org/x/sys v0.0.0-20190422165155-953cdadca894
+golang.org/x/sys/unix
+# golang.org/x/text v0.3.0
+golang.org/x/text/secure/bidirule
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
+golang.org/x/text/transform
