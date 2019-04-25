@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   zookeeper:
     image: wurstmeister/zookeeper
@@ -6,7 +6,7 @@ services:
       - "2181:2181"
   kafka:
     build: kafka/.
-    links:
+    depends_on: 
       - zookeeper
     ports:
       - "9092:9092"
@@ -23,11 +23,11 @@ services:
       - 9090:9090/tcp
     volumes:
       - ./mount/prometheus:/etc/prometheus
-    links:
+    depends_on: 
       - kafka
   linewebhook:
     build: line_webhook/.
-    links: 
+    depends_on:  
       - kafka
     ports:
       - "8080:8080"
@@ -39,7 +39,7 @@ services:
       TOPIC_OUTGOING: line_outgoing
   botconnect:
     build: bot_connect/.
-    links: 
+    depends_on: 
       - kafka
     ports:
       - "8082:8082"
