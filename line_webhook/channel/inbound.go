@@ -19,6 +19,7 @@ type LineInbound struct {
 }
 
 func NewLineInbound(secret string, token string, producer kafka.Producer, topic string) *LineInbound {
+	// fmt.Printf("line secret :  %s, token : %s\n", secret, token)
 	return &LineInbound{
 		Client: connect(secret, token),
 		Producer: producer,
@@ -29,7 +30,7 @@ func NewLineInbound(secret string, token string, producer kafka.Producer, topic 
 func connect(secret string, token string) *linebot.Client {
 	bot, err := linebot.New(secret, token)
 	if err != nil {
-		fmt.Printf("linebot err: %v", err)
+		fmt.Printf("linebot err: %v\n", err)
 		os.Exit(-1)
 	}
 	return bot
@@ -43,9 +44,9 @@ func (l *LineInbound) MessageHanlder(c echo.Context) error {
 	events, err := l.Client.ParseRequest(c.Request())
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
-			c.String(400, linebot.ErrInvalidSignature.Error())
+			return c.String(http.StatusBadRequest, linebot.ErrInvalidSignature.Error())
 		} else {
-			c.String(500, "internal")
+			return c.String(http.StatusInternalServerError, "internal server error")
 		}
 	}
 
@@ -55,6 +56,6 @@ func (l *LineInbound) MessageHanlder(c echo.Context) error {
 			log.Print(err)
 		}
 	}
-	return c.JSON(http.StatusOK, "OK!")
+	return c.String(http.StatusOK, "OK!")
 }
 
