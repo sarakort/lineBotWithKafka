@@ -9,6 +9,7 @@ import (
 
 	"github.com/joho/godotenv"
 	echo "github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 var (
@@ -24,7 +25,13 @@ func loadEnv() {
 func startServer() {
 	producer := kafka.NewKafkaSyncProducer(os.Getenv("BOOTSTRAP_SERVERS"))
 	consumer := kafka.NewKafkaConsumer(os.Getenv("BOOTSTRAP_SERVERS"),os.Getenv("TOPIC_OUTGOING"))
+	// Echo Instance
 	e := echo.New()
+
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
 	// Initialize linebot client
 	lineIn := line.NewLineInbound(os.Getenv("CHANNEL_SECRET"), os.Getenv("CHANNEL_ACCESS_TOKEN"), producer,  os.Getenv("TOPIC_IMCOMING"))
 	lineOut:= line.NewLineOutbound(os.Getenv("CHANNEL_SECRET"), os.Getenv("CHANNEL_ACCESS_TOKEN"), *consumer )
@@ -45,6 +52,7 @@ func serviceHandler(e *echo.Echo, lineIn *line.LineInbound) {
 	e.POST("/webhooks", lineIn.MessageHanlder)
 }
 
+//Handler
 func ping(c echo.Context) error {
 	return c.String(200, "Line boi service is ok!")
 }
