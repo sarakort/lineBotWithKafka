@@ -2,6 +2,8 @@
 github.com/DataDog/zstd
 # github.com/Shopify/sarama v1.22.0
 github.com/Shopify/sarama
+# github.com/bsm/sarama-cluster v2.1.15+incompatible
+github.com/bsm/sarama-cluster
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
 # github.com/eapache/go-resiliency v1.1.0
@@ -16,6 +18,8 @@ github.com/golang/snappy
 github.com/joho/godotenv
 # github.com/labstack/echo v3.3.10+incompatible
 github.com/labstack/echo
+# github.com/labstack/echo/v4 v4.1.5
+github.com/labstack/echo/v4
 # github.com/labstack/gommon v0.2.8
 github.com/labstack/gommon/color
 github.com/labstack/gommon/log
@@ -34,9 +38,9 @@ github.com/rcrowley/go-metrics
 github.com/valyala/bytebufferpool
 # github.com/valyala/fasttemplate v1.0.1
 github.com/valyala/fasttemplate
-# golang.org/x/crypto v0.0.0-20190422183909-d864b10871cd
-golang.org/x/crypto/acme/autocert
+# golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
 golang.org/x/crypto/acme
+golang.org/x/crypto/acme/autocert
 # golang.org/x/net v0.0.0-20190420063019-afa5a82059c6
 golang.org/x/net/proxy
 golang.org/x/net/idna

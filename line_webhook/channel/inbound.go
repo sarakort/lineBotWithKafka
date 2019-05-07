@@ -8,7 +8,7 @@ import (
 	"os"
 	"log"
 
-	"github.com/labstack/echo"
+	echo "github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 

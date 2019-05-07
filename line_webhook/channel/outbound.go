@@ -1,11 +1,18 @@
 package channel
 
 import (
+	"encoding/json"
 	"line_webhook/kafka"
 	"fmt"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
+
+type BotapiReply struct {
+	ReplyToken string `json:"replytoken"`
+	Topic string `json:"topic"`
+	Confidence string `json:"confidence"`
+}
 
 type LineOutbound struct {
 	Client *linebot.Client
@@ -30,7 +37,7 @@ func (l *LineOutbound) ReplyMessage(replyToken string, msg string) error {
 func (l *LineOutbound)ConsumeEvents(){
 	var msgVal []byte
 	var err error
-	var event linebot.Event
+	var reply BotapiReply
 	// var logMap map[string]interface{}
 	defer func() {
         if r := recover(); r != nil {
@@ -49,21 +56,11 @@ func (l *LineOutbound)ConsumeEvents(){
 			msgVal = msg.Value
 			fmt.Printf("Topic %s, Processing %s\n",  l.Consumer.Topics, string(msgVal))
 			
-			if err = event.UnmarshalJSON(msgVal ); err != nil{
+			if err = json.Unmarshal(msgVal, &reply ); err != nil{
 				fmt.Printf("linebot event unmarshall error: %s\n" ,err)
 			}else {
-				// logMap = log.(map[string]interface{})
-				// replyToken := logMap["replyToken"]
-				// fmt.Printf("replyToken %s\n", replyToken)
-				if event.Type == linebot.EventTypeMessage {
-					switch message := event.Message.(type) {
-					case *linebot.TextMessage:
-						fmt.Printf("Recived text: %s\n", message.Text)
-						messageFromPing := "hello, I am bot." + message.Text
-						if err = l.ReplyMessage(event.ReplyToken, messageFromPing); err != nil {
-							fmt.Printf("reply message error %s \n", err)
-						}
-					}
+				if err = l.ReplyMessage(reply.ReplyToken, reply.Topic); err != nil {
+					fmt.Printf("reply message error %s \n", err)
 				}
 			}	
 		}
