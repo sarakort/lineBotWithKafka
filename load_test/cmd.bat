@@ -1,0 +1,1 @@
+vegeta -cpus 4 attack -body line_request.json  -targets targets.txt  -rate 50 -duration 1m | vegeta report -reporter=plot -output=test_api_1_500_30.html

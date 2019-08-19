@@ -1,8 +1,11 @@
 package main
 
 import (
+	"io/ioutil"
+	"net/http"
 	"encoding/json"
 	"bot/connect/kafka"
+	"bot/connect/channel"
 	"log"
 	"os"
 	"flag"
@@ -35,12 +38,12 @@ func startServer() {
 
 	serviceHandler(e)
 
-	go consumeEvents(consumer, producer , os.Getenv("TOPIC_OUTGOING"))
+	go consumeEvents(consumer, producer , os.Getenv("TOPIC_OUTGOING"), os.Getenv("API_URL"))
 	// Start server listener
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
-func consumeEvents(consumer *kafka.Consumer, producer kafka.Producer, topic string){
+func consumeEvents(consumer *kafka.Consumer, producer kafka.Producer, topic string, apiUrl string){
 	var msgVal []byte
 	var err error
 	var event linebot.Event 
@@ -50,6 +53,13 @@ func consumeEvents(consumer *kafka.Consumer, producer kafka.Producer, topic stri
             fmt.Println("Recovered in f", r)
         }
     }()
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    30 * time.Second,
+		DisableCompression: true,
+	}
+	client := &http.Client{Transport: tr}
+
 
 	for {
 		select {
@@ -66,11 +76,44 @@ func consumeEvents(consumer *kafka.Consumer, producer kafka.Producer, topic stri
 				fmt.Println("linebot event unmarshall error")
 			}else{
 				fmt.Printf("value %v\n", event)
+				if event.Type == linebot.EventTypeMessage {
+					switch message := event.Message.(type) {
+					case *linebot.TextMessage:
+						reqUrl  := apiUrl + message.Text
+						fmt.Printf("req : %s\n", reqUrl)
+						resp, err := client.Get(reqUrl)
+
+						defer resp.Body.Close()
+
+						if err != nil{
+							fmt.Printf("call http %s err: %s", apiUrl , err)
+							continue
+						}
+
+						body, err := ioutil.ReadAll(resp.Body)
+
+						if err != nil {
+							fmt.Printf("read body error %s\n", err)
+							continue
+						}
+						var reply channel.BotapiReply
+
+						if err := json.Unmarshal(body, &reply); err != nil {
+							fmt.Printf("unmarshall err %s \n", err)
+							continue
+						}
+
+						reply.ReplyToken = event.ReplyToken
+
+						if err = producer.SendMsg(topic, reply) ; err != nil{
+							fmt.Printf("Send to kafka error %s\n", err)
+						}
+
+					}
+				}
+
 				time.Sleep(1 * time.Second)
 
-				if err = producer.SendByteMsg(topic, msgVal) ; err != nil{
-					fmt.Printf("Send to kafka error %s\n", err)
-				}
 			}
 
 		}

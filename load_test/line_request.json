@@ -1,0 +1,10 @@
+X-Line-Signature: ASGHcw+yxzktAgctRfPrMHp/q1Dcbz8lmgrW9ehaquc=
+Content-Type: application/json;charset=UTF-8
+content-length: 286
+host: d0076fe9.ngrok.io
+accept: */*
+user-agent: LineBotWebhook/1.0
+X-Forwarded-Proto: https
+X-Forwarded-For: 147.92.149.169
+
+{"events":[{"type":"message","replyToken":"1d4c298f985c4f70bd2cb0cd455b93fe","source":{"userId":"U35329f7ee900188c4f21d8e5a30c3c45","type":"user"},"timestamp":1556178878611,"message":{"type":"text","id":"9753797096035","text":"test"}}],"destination":"Ud9ab1d87c350204c66c634519ce7fec2"}
